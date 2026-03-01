@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>College ERP Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .chat-box {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background: white;
+            border: 1px solid #ccc;
+            display: none;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin: 5px 0;
+        }
+
+        .user {
+            text-align: right;
+            color: blue;
+        }
+
+        .bot {
+            text-align: left;
+            color: green;
+        }
+
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+        }
+
+        .chat-input button {
+            padding: 10px;
+            border: none;
+            background: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-button" onclick="toggleChat()">💬</div>
+
+<div class="chat-box" id="chatBox">
+    <div class="chat-header">College Chatbot</div>
+    <div class="chat-messages" id="messages"></div>
+    <div class="chat-input">
+        <input type="text" id="question" placeholder="Ask something..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    function toggleChat() {
+        let box = document.getElementById("chatBox");
+        box.style.display = box.style.display === "flex" ? "none" : "flex";
+    }
+
+    async function sendMessage() {
+        let input = document.getElementById("question");
+        let message = input.value;
+
+        if (!message) return;
+
+        let messagesDiv = document.getElementById("messages");
+
+        messagesDiv.innerHTML += `<div class="message user">${message}</div>`;
+
+        let res = await fetch(`http://127.0.0.1:8000/chat?user_question=${encodeURIComponent(message)}`);
+        let data = await res.json();
+
+        messagesDiv.innerHTML += `<div class="message bot">${data.response}</div>`;
+
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        input.value = "";
+    }
+</script>
+
+</body>
+</html>
