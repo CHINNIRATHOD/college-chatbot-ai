@@ -117,24 +117,37 @@ def admin_dashboard():
     if not logged_in:
         return RedirectResponse("/admin-login", status_code=303)
 
-    html = "<h2>Admin Dashboard</h2>"
+    html = """
+    <h2>Admin Dashboard</h2>
+    <a href="/">Back to Chat</a>
+    <hr>
 
-    html += """
     <h3>Add New Q&A</h3>
     <form method="post" action="/add">
-        Question:<br>
+        <label>Question:</label><br>
         <input type="text" name="question" style="width:400px"><br><br>
-        Answer:<br>
-        <input type="text" name="answer" style="width:400px"><br><br>
-        <button type="submit">Add</button>
+
+        <label>Answer:</label><br>
+        <textarea name="answer" rows="4" style="width:400px"></textarea><br><br>
+
+        <button type="submit">Add Question</button>
     </form>
+
+    <hr>
+    <h3>Existing Questions</h3>
+    <ul>
     """
 
-    html += "<h3>Existing Q&A</h3><ul>"
     for idx, item in enumerate(knowledge):
-        html += f"<li>{item['question']} - <a href='/delete/{idx}'>Delete</a></li>"
-    html += "</ul>"
+        html += f"""
+        <li>
+            <b>{item['question']}</b><br>
+            {item['answer']}<br>
+            <a href='/delete/{idx}' style='color:red;'>Delete</a>
+        </li><br>
+        """
 
+    html += "</ul>"
     return html
 
 # -------------------------------
