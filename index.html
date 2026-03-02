@@ -106,7 +106,7 @@
 
         messagesDiv.innerHTML += `<div class="message user">${message}</div>`;
 
-        let res = await fetch(`http://127.0.0.1:8000/chat?user_question=${encodeURIComponent(message)}`);
+        let res = await fetch(`https://college-chatbot-ai-2.onrender.com/chat?user_question=${encodeURIComponent(message)}`);
         let data = await res.json();
 
         messagesDiv.innerHTML += `<div class="message bot">${data.response}</div>`;
