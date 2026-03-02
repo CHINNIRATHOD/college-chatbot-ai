@@ -1,3 +1,4 @@
+from fastapi.responses import FileResponse
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -197,3 +198,8 @@ def analytics_dashboard():
     html += "</ul>"
 
     return html
+
+
+@app.get("/", response_class=HTMLResponse)
+def serve_ui():
+    return FileResponse("index.html")
